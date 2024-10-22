@@ -1,0 +1,131 @@
+<!-- template credits: https://colorlib.com/wp/template/colorlib-regform-26/  -->
+
+<!DOCTYPE html>  
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LINEARICONS -->
+    <link rel="stylesheet" href="fonts/linearicons/style.css">
+
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+        .form-holder {
+            margin-bottom: 15px; /* Add some margin between form elements */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="inner">
+            <img src="images/image-1.png" alt="" class="image-1">
+            <form id="registrationForm">
+                <h3>Register</h3>
+                <div class="form-holder">
+                    <span class="lnr lnr-user"></span>
+                    <input type="text" id="username" class="form-control" placeholder="Username" required>
+                </div>
+                <div class="form-holder" style="margin-bottom: 15px; display: flex; align-items: center;">
+                    <span class="lnr lnr-phone-handset" style="margin-right: 5px;"></span>
+                    <input type="text" value="+65" class="form-control" placeholder="Country Code" readonly style="width: 37%; margin-right: 2%;">
+                    <input type="text" id="phone" class="form-control" placeholder="Phone Number" required pattern="^\d{8}$" title="Phone number must be exactly 8 digits" style="width: 65%;">
+                </div>
+                
+                <div class="form-holder">
+                    <span class="lnr lnr-envelope"></span>
+                    <input type="email" id="email" class="form-control" placeholder="School Email" required>
+                </div>
+                <div class="form-holder">
+                    <span class="lnr lnr-lock"></span>
+                    <input type="password" id="password" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="form-holder">
+                    <span class="lnr lnr-lock"></span>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit">
+                    <span>Create an account</span>
+                </button>
+                <div id="responseMessage" style="text-align: center; margin-top: 20px;"></div>
+                <p style="text-align: center; margin-top: 20px;">
+                    Already have an account?
+                </p>
+                <p style="text-align: center; margin-top: 5px;">
+                    <a href="login.html"
+                       style="text-decoration: none; color: #87ceeb;"
+                       onmouseover="this.style.color='#41b9e8';"
+                       onmouseout="this.style.color='#87ceeb';">
+                        Log in
+                    </a>
+                </p>
+            </form>
+            <img src="images/image-2.png" alt="" class="image-2">
+        </div>
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const username = document.getElementById('username').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate username: only allow letters, numbers, and underscores
+            const usernamePattern = /^[a-zA-Z0-9_]+$/;
+            if (!usernamePattern.test(username)) {
+                document.getElementById('responseMessage').innerText = 'Username can only contain letters, numbers, and underscores.';
+                document.getElementById('responseMessage').className = 'error';
+                return;
+            }
+
+            // Validate password match
+            if (password !== confirmPassword) {
+                document.getElementById('responseMessage').innerText = 'Passwords do not match!';
+                document.getElementById('responseMessage').className = 'error';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username,
+                        phone,
+                        email,
+                        password,
+                    }),
+                });
+
+                const data = await response.json();
+                document.getElementById('responseMessage').innerText = data.message; // Show response message
+                document.getElementById('responseMessage').className = response.ok ? 'success' : 'error';
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('responseMessage').innerText = 'Registration failed!';
+                document.getElementById('responseMessage').className = 'error';
+            }
+        });
+    </script>
+</body>
+</html>

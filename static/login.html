@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LINEARICONS -->
+    <link rel="stylesheet" href="fonts/linearicons/style.css">
+    
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="inner">
+        <img src="images/image-1.png" alt="" class="image-1">
+        <form id="loginForm">
+            <h3>Login</h3>
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" id="username" placeholder="Username" required>
+            </div>
+
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit">
+                <span>Sign in</span>
+            </button>
+            
+            <div id="responseMessage" style="text-align: center; margin-top: 20px;"></div>
+            
+            <p style="text-align: center; margin-top: 20px;">
+                No account yet?
+            </p>
+            <p style="text-align: center; margin-top: 5px;">
+                <a href="index.html" 
+                   style="text-decoration: none; color: #87ceeb;"
+                   onmouseover="this.style.color='#41b9e8';" 
+                   onmouseout="this.style.color='#87ceeb';">
+                    Sign up
+                </a>                    
+            </p>
+        </form>
+
+        <img src="images/image-2.png" alt="" class="image-2">
+    </div>
+</div>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#loginForm').on('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        const username = $('#username').val();
+        const password = $('#password').val();
+
+        $.ajax({
+            url: 'http://127.0.0.1:5000/login', // Update the URL to your Flask login endpoint
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            success: function(response) {
+			    // On success, store the username in localStorage
+				localStorage.setItem('username', username);
+				
+                // On success, display the success message in green and redirect to home.html
+                $('#responseMessage').css('color', 'green').text('Login successful!');
+                setTimeout(function() {
+                    window.location.href = 'home.html'; // Redirect to home.html after 1 second
+                }, 1000);
+            },
+            error: function(xhr) {
+                // On failure, display the error message in red
+                $('#responseMessage').css('color', 'red').text(xhr.responseJSON.message || 'Login failed!');
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>

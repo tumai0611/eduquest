@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="fonts/linearicons/style.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <p id="welcomeMessage">Welcome, username</p>
+
+    <script>
+        // Assuming the username is passed from the backend
+        // Retrieve the username from localStorage or a session-based approach
+        const username = localStorage.getItem('username'); // Get username from localStorage
+        if (username) {
+            document.getElementById('welcomeMessage').innerText = `Welcome, ${username}!!`;
+        } else {
+            document.getElementById('welcomeMessage').innerText = 'Welcome, Guest.';
+        }
+    </script>
+</body>
+</html>
