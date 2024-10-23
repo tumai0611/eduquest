@@ -18,6 +18,7 @@ def home():
     # Redirect to your Netlify site
     return redirect("https://astonishing-travesseiro-d6393a.netlify.app/")
 
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -49,7 +50,7 @@ def register():
         "email": email,
         "passwordHash": hashed_password,
     }
-
+    print("Received data:", data)  # Log the received data
     users.insert_one(new_user)
     return jsonify({"message": "User registered successfully"}), 201
 
