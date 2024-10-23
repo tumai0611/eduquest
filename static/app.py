@@ -3,11 +3,17 @@ from pymongo import MongoClient
 from bcrypt import hashpw, gensalt, checkpw
 from flask_cors import CORS
 
+import os
+from pymongo import MongoClient
+
+
+
+
 app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins, adjust as needed
 
-client = MongoClient('mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/')
+client = MongoClient(os.getenv('MONGODB_URI'))
 db = client.userDB
 users = db.users
 
