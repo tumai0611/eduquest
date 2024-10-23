@@ -17,6 +17,11 @@ client = MongoClient(os.getenv('MONGODB_URI'))
 db = client.userDB
 users = db.users
 
+@app.route('/')
+def home():
+    return jsonify({"message": "Welcome to the User Registration API!"}), 200
+
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
