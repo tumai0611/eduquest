@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 
 # Set up CORS to allow requests from your Netlify site
-CORS(app, resources={r"/api/*": {"origins": "https://astonishing-travesseiro-d6393a.netlify.app"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 try:
     mongodb_uri = os.getenv('mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/')
     client = MongoClient("mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/")
@@ -80,6 +80,9 @@ def login():
         print("Invalid credentials for:", username)  # Log invalid login attempt
         return jsonify({"message": "Invalid username or password"}), 401
 
+@app.route('/login', methods=['OPTIONS'])
+def login_options():
+    return jsonify({'status': 'ok'}), 200
 
 
 
