@@ -64,7 +64,7 @@ $(document).ready(function() {
         const password = $('#password').val();
 
         $.ajax({
-            url: 'http://127.0.0.1:5000/login', // Update the URL to your Flask login endpoint
+            url: 'https://sweproject-b67a348f100c.herokuapp.com/', // Heroku endpoint
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
