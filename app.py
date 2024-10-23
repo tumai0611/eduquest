@@ -17,9 +17,9 @@ client = MongoClient(os.getenv('MONGODB_URI'))
 db = client.userDB
 users = db.users
 
-""" @app.route('/')
+@app.route('/')
 def home():
-    return jsonify({"message": "Welcome to the User Registration API!"}), 200 """
+    return redirect("https://astonishing-travesseiro-d6393a.netlify.app/", code=302)
 
 
 @app.route('/register', methods=['POST'])
