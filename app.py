@@ -16,7 +16,7 @@ users = db.users
 @app.route('/')
 def home():
     # Redirect to your Netlify site
-    return redirect("https://astonishing-travesseiro-d6393a.netlify.app/")
+    return redirect("https://astonishing-travesseiro-d6393a.netlify.app/", code=302)
 
 
 @app.route('/register', methods=['POST'])
@@ -69,5 +69,9 @@ def login():
     else:
         return jsonify({"message": "Invalid username or password"}), 401
 
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
+
