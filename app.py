@@ -19,7 +19,7 @@ def home():
     return redirect("https://astonishing-travesseiro-d6393a.netlify.app/", code=302)
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
     username = data['username']
