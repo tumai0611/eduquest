@@ -11,15 +11,15 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins, adjust as needed
+CORS(app)  # Allow all origins, adjust as needed
 
 client = MongoClient(os.getenv('MONGODB_URI'))
 db = client.userDB
 users = db.users
 
-@app.route('/')
+""" @app.route('/')
 def home():
-    return jsonify({"message": "Welcome to the User Registration API!"}), 200
+    return jsonify({"message": "Welcome to the User Registration API!"}), 200 """
 
 
 @app.route('/register', methods=['POST'])
