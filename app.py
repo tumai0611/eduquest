@@ -64,17 +64,22 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
+    print("Login attempt:", data)  # Log the incoming data
     username = data['username']
     password = data['password']
 
     user = users.find_one({"username": username})
     if not user:
+        print("User not found:", username)  # Log if user doesn't exist
         return jsonify({"message": "User does not exist"}), 404
 
     if user and checkpw(password.encode('utf-8'), user['passwordHash']):
+        print("Login successful for:", username)  # Log successful login
         return jsonify({"message": "Login successful!"}), 200
     else:
+        print("Invalid credentials for:", username)  # Log invalid login attempt
         return jsonify({"message": "Invalid username or password"}), 401
+
 
 
 
