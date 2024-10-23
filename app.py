@@ -1,26 +1,22 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from pymongo import MongoClient
 from bcrypt import hashpw, gensalt, checkpw
 from flask_cors import CORS
-
 import os
-from pymongo import MongoClient
-
-
-
 
 app = Flask(__name__)
 
-CORS(app)  # Allow all origins, adjust as needed
+# Set up CORS to allow requests from your Netlify site
+CORS(app, resources={r"/api/*": {"origins": "https://astonishing-travesseiro-d6393a.netlify.app"}})
 
-client = MongoClient(os.getenv('MONGODB_URI'))
+client = MongoClient(os.getenv('mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/'))
 db = client.userDB
 users = db.users
 
 @app.route('/')
 def home():
-    return redirect("https://astonishing-travesseiro-d6393a.netlify.app/", code=302)
-
+    # Redirect to your Netlify site
+    return redirect("https://astonishing-travesseiro-d6393a.netlify.app/")
 
 @app.route('/register', methods=['POST'])
 def register():
