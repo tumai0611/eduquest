@@ -61,7 +61,7 @@ def register():
     users.insert_one(new_user)
     return jsonify({"message": "User registered successfully"}), 201
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
     print("Login attempt:", data)  # Log the incoming data
