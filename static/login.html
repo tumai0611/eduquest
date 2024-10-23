@@ -64,7 +64,7 @@ $(document).ready(function() {
         const password = $('#password').val();
 
         $.ajax({
-            url: 'https://sweproject-b67a348f100c.herokuapp.com/login', // Updated to /login endpoint// Heroku endpoint
+            url: 'https://sweproject-b67a348f100c.herokuapp.com/api/login', // Updated to /login endpoint// Heroku endpoint
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
