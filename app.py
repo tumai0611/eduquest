@@ -8,11 +8,17 @@ app = Flask(__name__)
 
 # Set up CORS to allow requests from your Netlify site
 CORS(app, resources={r"/api/*": {"origins": "https://astonishing-travesseiro-d6393a.netlify.app"}})
-
-mongo_uri = os.environ.get("mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/")  # This should be set to your Atlas URI
+try:
+    mongodb_uri = os.getenv('mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/')
+    client = MongoClient("mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/")
+    db = client['userDB']  # Replace with your database name
+    users = db.users
+except Exception as e:
+    print("Could not connect to MongoDB:", e)
+""" mongo_uri = os.getenv("mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/")  # This should be set to your Atlas URI
 client = MongoClient(os.getenv('mongodb+srv://elysia:swe@ct2004-swe.3a2gl.mongodb.net/'))
 db = client.userDB
-users = db.users
+users = db.users """
 
 @app.route('/')
 def home():
