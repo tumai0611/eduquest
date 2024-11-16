@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Link to Linearicons Font CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='fonts/linearicons/style.css') }}">
+    
+        <!-- Link to Main Style CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+
+<body>
+
+<div class="wrapper">
+    <div class="inner">
+        <img src="{{ url_for('static', filename='images/image-1.png') }}" alt="" class="image-1">
+        <form id="loginForm">
+            <h3>Login</h3>
+            <!-- <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" class="form-control" id="username" placeholder="Username" required>
+            </div> -->
+            <div class="form-holder">
+                <span class="lnr lnr-envelope"></span>
+                <input type="email" class="form-control" id="email" placeholder="Email" required>
+            </div>
+            
+
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit">
+                <span>Sign in</span>
+            </button>
+            
+            <div id="responseMessage" style="text-align: center; margin-top: 20px;"></div>
+            
+            <p style="text-align: center; margin-top: 20px;">
+                No account yet?
+            </p>
+            <p style="text-align: center; margin-top: 5px;">
+                <a href="/register" 
+                   style="text-decoration: none; color: #87ceeb;"
+                   onmouseover="this.style.color='#41b9e8';" 
+                   onmouseout="this.style.color='#87ceeb';">
+                    Sign up
+                </a>                    
+            </p>
+        </form>
+
+        <img src="{{ url_for('static', filename='images/image-2.png') }}" alt="" class="image-2">
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<!-- login.html -->
+
+<script>
+    $(document).ready(function() {
+        $('#loginForm').on('submit', function(event) {
+            event.preventDefault();
+    
+            const email = $('#email').val();
+            const password = $('#password').val();
+    
+            $.ajax({
+                url: '/api/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ email, password }),
+                success: function(response) {
+    // console.log("Login response:", response);  // Debugging line to check response data
+    localStorage.setItem('username', response.username);
+    localStorage.setItem('email', email);
+    localStorage.setItem('phone', response.phone);  
+    localStorage.setItem('role', response.role);
+    localStorage.setItem('user_id', response.user_id);
+
+    if (response.role === 'educator') {
+        window.location.href = '/eduDash';
+    } else if (response.role === 'student') {
+        window.location.href = '/studentDash';
+    }
+},
+
+                error: function(xhr) {
+                    $('#responseMessage').text(xhr.responseJSON.message || 'Login failed!');
+                }
+            });
+        });
+    });
+</script>
+
+    
+    
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!-- register.html -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- Link to Linearicons Font CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='fonts/linearicons/style.css') }}">
+    
+        <!-- Link to Main Style CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+
+<body>
+
+<div class="wrapper">
+    <div class="inner">
+        <img src="{{ url_for('static', filename='images/image-1.png') }}" alt="" class="image-1">
+        <form id="registrationForm">
+            <h3>Register</h3>
+            <!-- Username Field -->
+            <div class="form-holder">
+                <span class="lnr lnr-user"></span>
+                <input type="text" id="username" class="form-control" placeholder="Username" required>
+            </div>
+            
+            <!-- Phone Field -->
+            <div class="form-holder">
+                <span class="lnr lnr-phone-handset"></span>
+                <input type="text" id="phone" class="form-control" placeholder="Phone Number" required pattern="^\d{8}$" title="Phone number must be exactly 8 digits">
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-holder">
+                <span class="lnr lnr-envelope"></span>
+                <input type="email" id="email" class="form-control" placeholder="School Email" required>
+            </div>
+
+            <!-- Password Fields -->
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+            </div>
+            <div class="form-holder">
+                <span class="lnr lnr-lock"></span>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+            </div>
+
+            <!-- Role Field -->
+            <div class="form-holder">
+                <label for="role">Role:</label>
+                <select id="role" class="form-control" required>
+                    <option value="">Select Role</option>
+                    <option value="educator">Educator</option>
+                    <option value="student">Student</option>
+                </select>
+            </div>
+
+            <button type="submit">
+                <span>Create an account</span>
+            </button>
+            <div id="responseMessage" style="text-align: center; margin-top: 20px;"></div>
+            <p style="text-align: center; margin-top: 20px;">
+                Already have an account?
+                <a href="/login">Log in</a>
+            </p>
+        </form>
+        <img src="{{ url_for('static', filename='images/image-2.png') }}" alt="" class="image-2">
+    </div>
+</div>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const role = document.getElementById('role').value;
+
+        if (password !== confirmPassword) {
+            document.getElementById('responseMessage').innerText = 'Passwords do not match!';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    phone,
+                    email,
+                    password,
+                    role
+                }),
+            });
+
+            const data = await response.json();
+            document.getElementById('responseMessage').innerText = data.message;
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('responseMessage').innerText = 'Registration failed!';
+        }
+    });
+</script>
+
+</body>
+</html>
