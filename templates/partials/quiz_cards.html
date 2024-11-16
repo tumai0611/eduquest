@@ -1,0 +1,18 @@
+<div class="quiz-list">
+    {% for quiz in quizzes %}
+    <div class="quiz-card" data-quiz-id="{{ quiz._id }}">
+        <h3 id="quiz-title-{{ quiz._id }}">{{ quiz.title.split(' - ')[0] }}</h3>
+        <p id="quiz-date-{{ quiz._id }}">Created on {{ quiz.title.split(' - ')[1] }}</p>
+        
+        <div class="button-container">
+            <button class="rename-btn" onclick="showRenamePrompt('{{ quiz._id }}')">Rename</button>
+            <button class="assign-btn" onclick="assignQuiz('{{ quiz._id }}')">Assign</button>
+            <button class="view-score-btn" onclick="viewScore('{{ quiz._id }}')">View Score</button>
+            <button class="delete-btn" onclick="deleteQuiz('{{ quiz._id }}')">Delete</button>
+        </div>
+    </div>
+    {% else %}
+    <p>You have no existing quiz. Please create one.</p>
+    {% endfor %}
+</div>
+
